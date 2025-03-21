@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niangao</title>
+    <style>
+        /* styles.css */
+
+        /*Universal*/
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            background-color: #f7fafc;
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }    
+
+        .page-container {
+            position: relative;
+            width: 75%;
+            min-width: 500px;
+            min-height: 100%;
+            max-width: 1135px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+        }    
+
+        /* Niangao little guy */
+        .body {
+            position: relative;
+            top: 5px;
+            width: 90px !important;
+            height: 30px !important;
+            background: #fff;
+            border: 2px solid black;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            box-sizing: border-box;
+            padding: 0;
+        }
+
+        .eyes {
+            display: flex;
+            justify-content: space-between;
+            width: 52px;
+            padding: 0;
+        }
+
+        .eye {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 2px solid black;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            animation: blink 5s infinite;
+            margin: 0;
+        }
+
+        .pupil {
+            width: 7px;
+            height: 7px;
+            background: black;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes blink {
+            0%, 95%, 100% {
+                height: 20px;
+            }
+            97%, 98% {
+                height: 0px;
+            }
+        }
+        
+        .title {
+            position: relative;
+            font-weight: 36;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 24px;
+            padding-bottom: 5px;
+        }
+
+        .title-box {
+            position: relative;
+            top: 1%;
+            width: 250px;
+            height: 50px;
+            margin-bottom: 15px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .file-input-container {
+            position: relative;
+            width: 100%; 
+            height: 25px;
+            display: flex;
+            flex-direction: row-reverse;
+            margin-bottom: 10px;
+        }
+
+        .blast-parameter-selector-container {
+            position: relative;
+            margin-bottom: 40px;
+            width: 100%; 
+            height: 25px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .blast-parameter-selector {
+            position: relative;
+            padding: 0%;;
+        }
+
+        .selector-1 {
+            min-width: 85px;
+        }
+
+        .selector-2 {
+            min-width: 185px;
+            margin-left: 10px;
+        }
+
+        .subtitle {
+            position: relative;
+            margin-top: 10px;
+            text-align: left;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            align-self: flex-start;
+        }
+
+        .download-button {
+            position: relative;
+            padding-top: 0;
+            background-color: transparent;
+        }
+
+        .boxes {
+            position: relative;
+            width: 100%;
+            min-width: 500px;
+            margin: 0;
+            padding: 10px 20px;
+            overflow: auto;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-sizing: border-box;
+            background-color: white;
+        }
+
+        .notebox {
+            min-height: 60px;
+            height: auto;
+            text-align: left;
+            line-height: 1.2;
+            color: black;
+            font-family: "Times New Roman";
+            font-size: 16px;
+            overflow: auto;
+        }
+
+        .fastabox {
+            height: 200px;
+            white-space: pre-wrap;
+        }
+
+        .tablebox {
+            height: 521px;
+        }       
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .introbox {
+            background: #f9f9f9 !important;
+            width: 500px !important;
+            color: #333 !important;
+            padding: 30px 20px 20px 20px !important;
+            border-radius: 10px !important;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important;
+            z-index: 1001 !important;
+            text-align: left !important;
+            position: relative !important;
+            font-family: 'Times New Roman', Times, serif !important;
+        }
+
+        .intro-page {
+            height: 180px;
+            box-sizing: border-box;
+            display: none;
+            position: relative;
+        }
+
+        .intro-page.active {
+            display: block;
+        }
+
+        .intro-page h3 {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            margin: 0 !important;
+            font-size: 18px !important;
+            font-family: 'Times New Roman', Times, serif !important;
+            font-weight: bold !important;
+        }
+
+        .intro-page .content {
+            padding-top: 50px;
+            height: calc(100% - 35px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .intro-page p {
+            margin: 5px 0 !important;
+            font-family: 'Times New Roman', Times, serif !important;
+            font-size: 16px !important;
+            line-height: 1.4 !important;
+        }
+
+        .intro-page ul {
+            margin: 10px 0 !important;
+            padding-left: 20px !important;
+        }
+
+        .intro-page li {
+            font-family: 'Times New Roman', Times, serif !important;
+            font-size: 16px !important;
+            line-height: 1.4 !important;
+            margin-bottom: 5px !important;
+        }
+
+        .intro-page a {
+            color: gray !important;
+            text-decoration: none !important;
+            font-family: 'Times New Roman', Times, serif !important;
+        }
+
+        .intro-page a:hover {
+            text-decoration: underline !important;
+        }
+
+        .page-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dot.active {
+            background-color: #666;
+        }
+
+        .page-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background-color: #666;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .page-nav:hover {
+            opacity: 1;
+        }
+
+        .prev-page {
+            left: -32px;
+        }
+
+        .next-page {
+            right: -32px;
+        }
+
+        .page-nav::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-top: 2px solid white;
+            border-right: 2px solid white;
+        }
+
+        .prev-page::before {
+            transform: rotate(-135deg);
+            margin-left: 3px;
+        }
+
+        .next-page::before {
+            transform: rotate(45deg);
+            margin-right: 3px;
+        }
+
+        .introbox p {
+            margin: 0 0 5px;
+        }
+
+        .introbox ul {
+            padding-left: 20px; /* Add padding to the list */
+            margin: 5px 0 10px 0;
+        }
+
+        .introbox a {
+            color: gray; /* Link color */
+            text-decoration: none; /* Remove underline from links */
+        }
+
+        .introbox a:hover {
+            text-decoration: underline; /* Underline links on hover */
+        }
+
+        .introbox ul li {
+            margin-bottom: 5px; /* Add space between list items */
+        }
+
+        .introbox ul li:last-child {
+            margin-bottom: 0; /* Remove margin from last list item */
+        }
+
+        .close-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            background-color: #666;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .close-icon:hover {
+            opacity: 1;
+        }
+
+        .close-icon::before,
+        .close-icon::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 2px;
+            background-color: white;
+        }
+
+        .close-icon::before {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        .close-icon::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+    </style>
+</head>
+
+<body>
+<div class="page-container">
+    <div class="title-box">
+        <!--Title-->
+        <div class="title">
+            <h1>Niangao</h1>
+        </div>
+        <!--Niangao little guy-->
+        <div class="body">
+            <div class="eyes">
+                <div class="eye" id="left-eye">
+                    <div class="pupil"></div>
+                </div>
+                <div class="eye" id="right-eye">
+                    <div class="pupil"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--BLAST parameter-->
+    <div class="blast-parameter-selector-container"> 
+        <div class="blast-parameter-selector selector-1" id="BLAST-or-not">
+            <!--Shiny placeholder-->
+        </div>
+        <div class="blast-parameter-selector selector-2" id="database-choosing">
+            <!--Shiny placeholder-->
+        </div>
+        <div class="blast-parameter-selector selector-2" id="hits-amount">
+            <!--Shiny placeholder-->
+        </div>
+    </div>
+
+    <!--File input-->
+    <div class="file-input-container" id="file-input-container"> 
+        <!--Shiny placeholder-->
+        <div class="download-button" id="download-button">
+            <!--Shiny placeholder-->
+        </div>
+    </div>
+        
+    <!--Notebox-->
+    <div class="subtitle">Notes</div>
+    <div class="boxes notebox" id="notebox">
+        <span id="text">
+            Upload your .ab1 files by dragging them here or clicking "Browse...". <br>
+            For paired-end assembly, ensure file pairs have identical names except for the "_Fwd.ab1" and "_Rev.ab1" suffixes. <br>
+            We highly recommend clicking the mascot next to the title. Enjoy using Niangao!
+        </span>
+    </div>
+
+    <!--Clean sequence-->
+    <div class="subtitle">Trimmed Sequences</div>
+    <div class="boxes fastabox" id="fasta-clean"></div>    
+
+    <!--Report-->
+    <div class="subtitle">Trimming Report</div>
+    <div class="boxes tablebox" id="report"></div> 
+
+    <!--BLAST Result-->
+    <div class="subtitle">BLAST Result</div>
+    <div class="boxes tablebox" id="BLAST"></div>
+    
+</div>
+
+<div class="overlay" id="overlay">
+    <div class="introbox">
+        <div class="close-icon" id="close-button"></div>
+        <div class="intro-page active" data-page="1">
+            <h3>Welcome to Niangao!</h3>
+            <div class="content">
+                <p>Niangao is an all-in-one tool for processing Sanger sequencing results (.ab1 files).</p>
+                <ul>
+                    <li>Extracts continuous high-quality sequences in FASTA format from your .ab1 files, enabling downstream analysis.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="intro-page" data-page="2">
+            <h3>Assembly & BLAST</h3>
+            <div class="content">
+                <ul>
+                    <li>Assembles paired "_Fwd.ab1" and "_Rev.ab1" files into contigs using CAP3.</li>
+                    <li>Provides either the successfully assembled contig or the longest clean input (Fwd or Rev) sequence.</li>
+                    <li>Allows you to BLAST your sequences, choose the database, and set the number of hits per page.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="intro-page" data-page="3">
+            <h3>Contact & Code</h3>
+            <div class="content">
+                <p>For inquiries or suggestions, please contact us at:</p>
+                <p>Authors: <a href="mailto:zhouwenhao@westlake.edu.cn">Wenhao Zhou</a> and <a href="mailto:wangxinyu30@westlake.edu.cn">Xinyu Wang</a> </p>
+                <p>Affiliation: <a href="https://zheng.lab.westlake.edu.cn/">Zheng Lab, Westlake University</a></p>
+                <p>GitHub: <a href="https://github.com/WeStrainGroup/Niangao_web_docker">Niangao_web_docker</a></p>
+            </div>
+        </div>
+        <div class="page-nav prev-page" id="prev-page"></div>
+        <div class="page-nav next-page" id="next-page"></div>
+        <div class="page-dots">
+            <div class="dot active" data-page="1"></div>
+            <div class="dot" data-page="2"></div>
+            <div class="dot" data-page="3"></div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        // script.js
+        /* eslint-disable no-unused-vars */
+
+        // Niangao little guy
+        document.addEventListener('mousemove', function(event) {
+            const eyes = document.querySelectorAll('.eye');
+            eyes.forEach(function(eye) {
+                const pupil = eye.querySelector('.pupil');
+                const rect = eye.getBoundingClientRect();
+                const eyeCenterX = rect.left + rect.width / 2;
+                const eyeCenterY = rect.top + rect.height / 2;
+                const angle = Math.atan2(event.clientY - eyeCenterY, event.clientX - eyeCenterX);
+                const distance = Math.min(rect.width / 4, Math.hypot(event.clientX - eyeCenterX, event.clientY - eyeCenterY) / 2);
+                const pupilX = Math.cos(angle) * distance;
+                const pupilY = Math.sin(angle) * distance;
+                pupil.style.transform = 'translate(' + pupilX + 'px, ' + pupilY + 'px)';
+            });
+        });
+
+        // Show text box on click
+        document.querySelector('.body').addEventListener('click', function() {
+            document.getElementById('overlay').style.display = 'flex';
+        });
+
+        // Close text box
+        document.getElementById('close-button').addEventListener('click', function() {
+            document.getElementById('overlay').style.display = 'none';
+        });
+
+        // Intro box pagination
+        let currentPage = 1;
+        const totalPages = 3;
+
+        function showPage(pageNum) {
+            document.querySelectorAll('.intro-page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.querySelectorAll('.dot').forEach(dot => {
+                dot.classList.remove('active');
+            });
+            
+            document.querySelector(`.intro-page[data-page="${pageNum}"]`).classList.add('active');
+            document.querySelector(`.dot[data-page="${pageNum}"]`).classList.add('active');
+            currentPage = pageNum;
+        }
+
+        document.getElementById('next-page').addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                showPage(currentPage + 1);
+            }
+        });
+
+        document.getElementById('prev-page').addEventListener('click', () => {
+            if (currentPage > 1) {
+                showPage(currentPage - 1);
+            }
+        });
+
+        document.querySelectorAll('.dot').forEach(dot => {
+            dot.addEventListener('click', () => {
+                showPage(parseInt(dot.dataset.page));
+            });
+        });
+    </script>
+</body>
+</html>

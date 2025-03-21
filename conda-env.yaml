@@ -1,0 +1,25 @@
+name: myenv
+channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/  # 清华 conda-forge
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/bioconda/    # 清华 bioconda
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/        # 清华 main (defaults)
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/        # 清华 free (defaults)
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r/           #清华 r (defaults)
+  - conda-forge
+  - bioconda
+dependencies:
+  - r-base=4.2.3
+  - r-shiny
+  - r-shinyjs
+  - r-dt
+  - r-zip
+  - bioconductor-sangerseqr
+  - r-rcpproll
+  - r-seqinr
+  - r-sys
+  - perl
+  - blast
+  - curl
+  - wget
+  - taxonkit
+  - csvtk
