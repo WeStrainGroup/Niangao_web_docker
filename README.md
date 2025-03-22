@@ -97,7 +97,9 @@ Replace `<container_id>` with the actual container ID from the previous step.
 ## Citation
 This project utilizes several R packages and external tools.
 **R Packages:** [shiny](https://github.com/rstudio/shiny), [shinyjs](https://github.com/daattali/shinyjs), [DT](https://github.com/rstudio/DT), [zip](https://github.com/r-lib/zip), [sangerseqR](https://github.com/jonathonthill/sangerseqR),  [RcppRoll](https://github.com/kevinushey/RcppRoll), [seqinr](https://github.com/lbbe-software/seqinr), [sys](https://github.com/jeroen/sys).
+
 **External Tools:** [CAP3](https://faculty.sites.iastate.edu/xqhuang/cap3-and-pcap-sequence-and-genome-assembly-programs), [BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi), [Taxonkit](https://github.com/shenwei356/taxonkit/).
+
 **Databases:**
 *   [ITS_RefSeq_Fungi](https://ftp.ncbi.nlm.nih.gov/blast/db/ITS_RefSeq_Fungi.tar.gz)
 *   [ITS_eukaryote_sequences](https://ftp.ncbi.nlm.nih.gov/blast/db/ITS_eukaryote_sequences.tar.gz)
