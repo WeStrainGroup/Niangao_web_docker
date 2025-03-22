@@ -2,6 +2,7 @@
 <p align="center">
   <strong>🔬 A user-friendly tool for processing Sanger sequencing (.ab1) files with trimming, assembly, and BLAST alignment.</strong>
 </p>
+
 ## Introduction
 
 > If you work with Sanger sequencing data and need a fast, efficient way to process `.ab1` files, **Niangao** is the perfect tool for you! 🚀 
