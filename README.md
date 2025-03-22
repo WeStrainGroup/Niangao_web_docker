@@ -1,6 +1,6 @@
 <h1 align="center">Niangao: Sanger Sequencing Results Processing Tool</h1>
 <p align="center">
-  <strong>🔬 A user-friendly tool for processing Sanger sequencing (.ab1) files with trimming, assembly, and BLAST alignment.</strong>
+  <strong>🔬 A user-friendly tool for processing .ab1 files with trimming, assembly, and BLAST alignment.</strong>
 </p>
 
 ## Introduction
@@ -18,15 +18,15 @@ Use it as a **Web tool**, an **R package**, or a **Docker container** based on y
 ### Web
 An [online version](https://niangao.lab.westlake.edu.cn) of Niangao is available for non-coders. Please check the [tips and features](#using-niangao-web---tips-and-features) for Niangao before using.
 ### R package
-If you are familiar with R and want to build your own pipeline with R code, please try our [R package version](https://github.com/WeStrainGroup/Niangao_R_package) of Niangao. Note that this version only have the trimming functionality! See [using R package](#using-r-package) for detailed code.
+If you are familiar with R and want to build your own pipeline with R code, please try our [R package version](https://github.com/WeStrainGroup/Niangao_R_package) of Niangao. **Note** that this version ***ONLY*** have the trimming functionality! See [using R package](#using-r-package) for detailed code.
 ### Docker image
 If you need to build Niangao at your local server for data security and faster uploads, we recommend you to use Dockerized Niangao, which have exactly the same functions and interface as Niangao Web. See [using Docker image](#using-docker-image) for the detailed code to build it.
 ## User manual
 ### Using Niangao Web - Tips and Features
 - **File Upload:** You can upload `.ab1` files by dragging and dropping them onto the file input area or by clicking the "Browse..." button.
 - **Paired-End Assembly:** For paired-end sequence assembly, name your forward and reverse read files with a consistent pattern: `SampleName_Fwd.ab1` and `SampleName_Rev.ab1`.  Only files with matching names and the correct suffixes (`_Fwd`, `_Rev`) will be assembled.
-- **BLAST Options:** Select "YES" to run BLAST. Choose your desired database and the number of hits to display.
 - **Failed Assemblies:** If CAP3 fails to assemble a pair of sequences (often due to low quality), the longer of the two sequences will be included in the output.
+- **BLAST Options:** Select "YES" to run BLAST. Choose your desired database and the number of aligned subject sequence to display.
 * **Downloading Results:**  Download your processed sequences and reports using the download button located next to the file input. **Important:** Results are ***NOT*** saved after you refresh or close the page.
 ### Using R package 
 #### Step 1: Install tool package for Niangao installation
@@ -82,11 +82,13 @@ If you what to check the container id to stop it (which is **highly recommended*
 docker ps
 ```
 This command lists all running containers.  Look for the container with the image name `niangao:latest` and note its `CONTAINER ID`.
+
 2.  **Check the running log (optional, useful for trouble shooting)**
 ```bash
 docker logs <container_id>
 ```
 Replace `<container_id>` with the actual container ID from the previous step.
+
 3.  **Stop the Container:**
 ```bash
 docker stop <container_id>
