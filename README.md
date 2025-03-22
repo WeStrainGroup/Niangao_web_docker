@@ -27,7 +27,7 @@ If you need to build Niangao at your local server for data security and faster u
 - **Paired-End Assembly:** For paired-end sequence assembly, name your forward and reverse read files with a consistent pattern: `SampleName_Fwd.ab1` and `SampleName_Rev.ab1`.  Only files with matching names and the correct suffixes (`_Fwd`, `_Rev`) will be assembled.
 - **Failed Assemblies:** If CAP3 fails to assemble a pair of sequences (often due to low quality), the longer of the two sequences will be included in the output.
 - **BLAST Options:** Select "YES" to run BLAST. Choose your desired database and the number of aligned subject sequence to display.
-* **Downloading Results:**  Download your processed sequences and reports using the download button located next to the file input. **Important:** Results are ***NOT*** saved after you refresh or close the page.
+- **Downloading Results:**  Download your processed sequences and reports using the download button located next to the file input. **Important:** Results are ***NOT*** saved after you refresh or close the page.
 ### Using R package 
 #### Step 1: Install tool package for Niangao installation
 Install R package '*devtools*' on your device if you haven't installed yet:
