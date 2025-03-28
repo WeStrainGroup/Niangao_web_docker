@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+title: Niangao
+type: software
+authors:
+  - given-names: Wenhao
+    family-names: Zhou
+  - given-names: Xinyu
+    family-names: Wang
+  - given-names: Ju-Sheng
+    family-names: Zheng
+    affiliation: Westlake University
+year: 2025
+repository-code: 'https://github.com/WeStrainGroup/Niangao_web_docker'
+url: 'https://niangao.lab.westlake.edu.cn'
+license: MIT
+version: '1.0'
