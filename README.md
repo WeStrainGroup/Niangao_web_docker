@@ -116,7 +116,9 @@ This project utilizes several R packages and external tools.
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 ## Citation
-If you use Niangao in your research or work, please cite this tool - see the [CITATION](CITATION) file for details, or click 'Cite this repository' on this page.
+If you use Niangao in your research or work, please cite this tool as follows (APA style):
+Zhou, W., Wang, X., & Zheng, J-S. (2025). Niangao (Version 1.0) [Software]. Westlake University. https://niangao.lab.westlake.edu.cn
+
 ## Contact us
 For questions, suggestions, or bug reports, please contact us via email at [zhouwenhao@westlake.edu.cn](mailto:zhouwenhao@westlake.edu.cn) and [wangxinyu30@westlake.edu.cn](mailto:wangxinyu30@westlake.edu.cn).
 We greatly appreciate your contributions and feedback! ❤
