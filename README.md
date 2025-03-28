@@ -101,7 +101,7 @@ Replace `<container_id>` with the actual container ID from the previous step.
 docker stop <container_id>
 ```
 Replace `<container_id>` with the actual container ID from the previous step.
-## Citation
+## References
 This project utilizes several R packages and external tools.
 **R Packages:** [shiny](https://github.com/rstudio/shiny), [shinyjs](https://github.com/daattali/shinyjs), [DT](https://github.com/rstudio/DT), [zip](https://github.com/r-lib/zip), [sangerseqR](https://github.com/jonathonthill/sangerseqR),  [RcppRoll](https://github.com/kevinushey/RcppRoll), [seqinr](https://github.com/lbbe-software/seqinr), [sys](https://github.com/jeroen/sys).
 
@@ -115,7 +115,7 @@ This project utilizes several R packages and external tools.
 *   [18S_fungal_sequences](https://ftp.ncbi.nlm.nih.gov/blast/db/18S_fungal_sequences.tar.gz)
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-## Citation
+## Cite Niangao
 If you use Niangao in your research or work, please cite this tool as follows (APA style):
 
 Zhou, W., Wang, X., & Zheng, JS. (2025). *Niangao* (Version 1.0) [Computer software]. Westlake University. https://github.com/WeStrainGroup/Niangao_web_docker
