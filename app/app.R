@@ -247,7 +247,7 @@ server <- function(input, output, session) {
             paired_data_clean2 <- paired_data[(min(continuous_num) - (window_size/2)):(max(continuous_num) + (window_size/2)), ]
             deleted_count2 <- length(windows_filter$num) - length(continuous_num) # calculate the number of bases deleted by clean 2
             
-            # clean 3 filter out bases with quality values under 30
+            # clean 3 filter out bases with quality values under 10
             threshold <- 10
             paired_data_clean3 <- paired_data_clean2[paired_data_clean2$quality_value >= threshold, ]
             deleted_count3 <- nrow(paired_data_clean2) - nrow(paired_data_clean3) # calculate the number of bases deleted by clean 3
