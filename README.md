@@ -114,7 +114,7 @@ This project utilizes several R packages and external tools.
 *   [28S_fungal_sequences](https://ftp.ncbi.nlm.nih.gov/blast/db/28S_fungal_sequences.tar.gz)
 *   [18S_fungal_sequences](https://ftp.ncbi.nlm.nih.gov/blast/db/18S_fungal_sequences.tar.gz)
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the CC BY-NC-SA 4.0 License - see the [LICENSE](LICENSE) file for details.
 ## Cite Niangao
 If you use Niangao in your research or work, please cite this tool as follows (APA style):
 
