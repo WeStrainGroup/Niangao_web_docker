@@ -32,6 +32,15 @@ ui <- fluidPage(
   ")
 )
 
+allowed_hit_counts <- c("1", "5", "10", "20")
+
+allowed_databases <- c("16S_ribosomal_RNA", "ITS_RefSeq_Fungi", "ITS_eukaryote_sequences", "28S_fungal_sequences", "18S_fungal_sequences")
+blast_choices <- c("YES", "NO")
+
+valid_choice <- function(value, choices) {
+  is.character(value) && is.null(dim(value)) && length(value) == 1L && value %in% choices
+}
+
 # Server
 server <- function(input, output, session) {
   # Generate unique ID and work dir for each session
@@ -66,7 +75,7 @@ server <- function(input, output, session) {
       ui = selectInput(
         inputId = paste0("BLAST-or-not", input$add_select),
         label = "Do BLAST?",
-        choices = c("YES", "NO"),
+        choices = blast_choices,
         width = 300,
       )
     )
@@ -76,7 +85,7 @@ server <- function(input, output, session) {
       ui = selectInput(
         inputId = paste0("database-choosing", input$add_select),
         label = "Which database to align?",
-        choices = c("16S_ribosomal_RNA", "ITS_RefSeq_Fungi", "ITS_eukaryote_sequences", "28S_fungal_sequences", "18S_fungal_sequences"),
+        choices = allowed_databases,
         width = 400,
       )
     )
@@ -86,7 +95,7 @@ server <- function(input, output, session) {
       ui = selectInput(
         inputId = paste0("hits-amount", input$add_select),
         label = "How many hits to present?",
-        choices = c("1", "5", "10", "20"),
+        choices = allowed_hit_counts,
         width = 400,
       )
     )
@@ -120,16 +129,26 @@ server <- function(input, output, session) {
     values$hits_amount <- input[[paste0("hits-amount", input$add_select)]]
   })
 
-  # set directories of databases
-  ITS_RefSeq_Fungi_dir <- "/opt/conda/envs/myenv/db/ITS_RefSeq_Fungi"
-  ITS_eukaryote_sequences_dir <- "/opt/conda/envs/myenv/db/ITS_eukaryote_sequences"
-  I6S_ribosomal_RNA_dir <- "/opt/conda/envs/myenv/db/16S_ribosomal_RNA"
-  Z8S_fungal_sequences_dir <- "/opt/conda/envs/myenv/db/28S_fungal_sequences"
-  I8S_fungal_sequences_dir <- "/opt/conda/envs/myenv/db/18S_fungal_sequences"
-
   # when input is ready, starts processing
   observeEvent(input$file, {
     req(input$file) # ensure the input is not empty
+    hits_amount <- values$hits_amount
+    blast_choice <- values$blast_or_not
+    database <- values$database_choosing
+    if (!valid_choice(blast_choice, blast_choices)) {
+      showNotification("Choose YES or NO for BLAST.", type = "error")
+      return()
+    }
+    if (blast_choice == "YES") {
+      if (!valid_choice(database, allowed_databases)) {
+        showNotification("Choose a BLAST database from the list.", type = "error")
+        return()
+      }
+      if (!valid_choice(hits_amount, allowed_hit_counts)) {
+        showNotification("Choose 1, 5, 10 or 20 BLAST hits.", type = "error")
+        return()
+      }
+    }
 
     # function: reset file folders
     reset_dir <- function(dir_path) {
@@ -141,11 +160,11 @@ server <- function(input, output, session) {
     }
     
     # create and reset file folders
-    seq_fwd_single <- file.path(getwd(), "default_fwd_single")
+    seq_fwd_single <- file.path(session_dir, "default_fwd_single")
     reset_dir(seq_fwd_single)
-    seq_rev_single <- file.path(getwd(), "default_rev_single")
+    seq_rev_single <- file.path(session_dir, "default_rev_single")
     reset_dir(seq_rev_single)
-    seq_nonsuffix_single <- file.path(getwd(), "default_nonsuffix_single")
+    seq_nonsuffix_single <- file.path(session_dir, "default_nonsuffix_single")
     reset_dir(seq_nonsuffix_single)
     
     result_niangao <- file.path(session_dir, "result_niangao") # folder that contains all the results
@@ -383,9 +402,9 @@ server <- function(input, output, session) {
             
             # run CAP3
             system2(cap3_path, 
-                    args = mergedFile, 
+                    args = shQuote(mergedFile), 
                     stdout = outFile, 
-                    stderr = "output_log.txt")
+                    stderr = file.path(session_dir, "output_log.txt"))
             
             # function: extract consensus sequence
             extractConsensus <- function(ace_content) {
@@ -475,7 +494,7 @@ server <- function(input, output, session) {
       shinyjs::show("notebox")
       
       # show blast is running
-      if (values$blast_or_not == "YES") {
+      if (blast_choice == "YES") {
         blast_notes <- "<br><strong>BLAST is running...</strong>"
         shinyjs::html("BLAST", blast_notes)
       }
@@ -550,13 +569,8 @@ server <- function(input, output, session) {
           files = list.files(seq_clean_single, full.names = TRUE, pattern = "*.fasta"),
           mode = "cherry-pick")
       
-      if (values$blast_or_not == "YES") {
-        database_path <- switch(values$database_choosing,
-                                    "ITS_RefSeq_Fungi" = ITS_RefSeq_Fungi_dir,
-                                    "ITS_eukaryote_sequences" = ITS_eukaryote_sequences_dir,
-                                    "16S_ribosomal_RNA" = I6S_ribosomal_RNA_dir,
-                                    "28S_fungal_sequences.tar.gz" = Z8S_fungal_sequences_dir,
-                                    "18S_fungal_sequences.tar.gz" = I8S_fungal_sequences_dir)  
+      if (blast_choice == "YES") {
+        database_path <- file.path("/opt/conda/envs/myenv/db", database)
 
         # Construct full paths
         query_file <- file.path(result_niangao, if (single_or_paired == "single") "seq_trimed_all.fasta" else "seq_trimed_assembled_all.fasta")
@@ -570,17 +584,17 @@ server <- function(input, output, session) {
         blast_args <- c("-query", query_file,
                 "-db", database_path,
                 "-out", output_file,
-                sprintf('-outfmt "6 qseqid sseqid staxids pident length qcovs mismatch gapopen qstart qend sstart send sstrand evalue bitscore"'),
-                "-max_target_seqs", values$hits_amount,
+                "-outfmt", "6 qseqid sseqid staxids pident length qcovs mismatch gapopen qstart qend sstart send sstrand evalue bitscore",
+                "-max_target_seqs", hits_amount,
                 "-num_threads", as.character(num_threads),
                 "-evalue", "1e-2")
 
-        blast_result <- system2(blast_command, args = blast_args, stdout = TRUE, stderr = TRUE)
+        blast_result <- sys::exec_internal(blast_command, args = blast_args, error = FALSE)
 
         # Check for errors
-        if (!is.null(attr(blast_result, "status")) && attr(blast_result, "status") != 0) {
-          error_message <- paste("BLAST failed with error:", paste(blast_result, collapse = "\n"))
-          shinyjs::html("BLAST", error_message)  # Display error in the UI
+        if (blast_result$status != 0L) {
+          error_message <- paste("BLAST failed with error:", rawToChar(blast_result$stderr))
+          shinyjs::html("BLAST", "BLAST failed.")
           showModal(modalDialog(
               title = "BLAST Error",
               error_message,
@@ -593,14 +607,14 @@ server <- function(input, output, session) {
           final_output_file <- file.path(result_niangao, "blast_result_final.tsv")
 
           # Extract lineage
-          taxonkit_cmd <- paste("cut -f3", output_file, "|",
+          taxonkit_cmd <- paste("cut -f3", shQuote(output_file), "|",
                                 "sed 's/;.*//' |",
-                                "taxonkit reformat -I 1 -F -P -f '{k}\t{p}\t{c}\t{o}\t{f}\t{g}\t{s}' >", lineage_file)
+                                "taxonkit reformat -I 1 -F -P -f '{k}\t{p}\t{c}\t{o}\t{f}\t{g}\t{s}' >", shQuote(lineage_file))
           system2("bash", args = c("-c", shQuote(taxonkit_cmd)))
 
           # Combine results and add header
-          paste_cmd <- paste("paste", output_file, lineage_file, "|",
-                            "csvtk add-header -t -n 'qseqid,sseqid,staxids,pident,length,qcovs,mismatch,gapopen,qstart,qend,sstart,send,sstrand,evalue,bitscore,taxids,kingdom,phylum,class,order,family,genus,species' >", final_output_file)
+          paste_cmd <- paste("paste", shQuote(output_file), shQuote(lineage_file), "|",
+                            "csvtk add-header -t -n 'qseqid,sseqid,staxids,pident,length,qcovs,mismatch,gapopen,qstart,qend,sstart,send,sstrand,evalue,bitscore,taxids,kingdom,phylum,class,order,family,genus,species' >", shQuote(final_output_file))
           system2("bash", args = c("-c", shQuote(paste_cmd)))
 
           # present blast results to the interface

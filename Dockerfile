@@ -13,6 +13,8 @@ RUN /bin/bash /tmp/download_databases.sh
 ENV TAXONKIT_DB=/opt/conda/envs/myenv/.taxonkit
 
 COPY ./app/ /app/
-RUN chmod +x /app/cap3
+RUN chmod +x /app/cap3 && useradd --create-home --uid 10001 niangao
+
+USER 10001
 
 CMD ["conda", "run", "-n", "myenv", "Rscript", "/app/app.R"]
